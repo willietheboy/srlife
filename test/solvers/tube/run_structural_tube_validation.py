@@ -347,7 +347,7 @@ if __name__ == "__main__":
       print("Max absolute error: %e" % a)
       print("Max relative error: %e" % r)
       print("")
-      ## graphical:
-      #case.plot_comparison(tube)
+      ## graphical plots:
+      case.plot_comparison(tube)
       ## print to PDF:
-      case.plot_comparison_pdf(tube)
+      # case.plot_comparison_pdf(tube)
