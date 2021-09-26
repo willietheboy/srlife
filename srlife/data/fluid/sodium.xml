@@ -1,0 +1,17 @@
+<!-- temperature in K, heat transfer coefficient in W/mm^2-K -->
+<!-- "base" is for OD60, WT1.2 with sodium flowing at 3 m/s -->
+<!-- "lowflow" is for OD60, WT1.2 with sodium flowing at 1.5 m/s -->
+<models>
+  <base type="PiecewiseLinearFluidMaterial">
+    <default>
+      <temp>-10000.0 823.15 848.15 873.15 898.15 923.15 948.15 973.15 998.15 1023.15 10000.0</temp>
+      <values>0.02069 0.02069 0.02042 0.02016 0.01992 0.01967 0.01944 0.01922 0.01900 0.01880 0.01880</values>
+    </default>
+  </base>
+  <lowflow type="PiecewiseLinearFluidMaterial">
+    <default>
+      <temp>-10000.0 823.15 848.15 873.15 898.15 923.15 948.15 973.15 998.15 1023.15 10000.0</temp>
+      <values>0.0141545 0.0141545 0.01395559 0.01376329 0.01357741 0.01339775 0.01322411 0.01305628 0.01289405 0.01273723 0.01273723</values>
+    </default>
+  </lowflow>
+</models>

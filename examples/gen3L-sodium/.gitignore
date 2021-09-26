@@ -1,0 +1,7 @@
+*.png
+*.pdf
+receiver*.hdf5
+panel*.hdf5
+tube*.hdf5
+resu/*.hdf5
+vtu/*
