@@ -13,7 +13,7 @@ def vmStress(tube):
   Calculate von Mises effective stress
 
   Parameters:
-    tube        single tube with full results
+    tube        single tube with complete structural results
   """
   vm = np.sqrt((
     (tube.quadrature_results['stress_xx'] -
@@ -33,7 +33,7 @@ def effStrain(tube):
   Calculate effective strain
 
   Parameters:
-    tube        single tube with full results
+    tube        single tube with complete structural results
   """
   ee = np.sqrt(
     2.0/3.0 * (
@@ -49,7 +49,7 @@ def effStrain(tube):
   )
   return ee
 
-def creep_fatigue(dmodel, tube, material, receiver, fmult):
+def creep_fatigue(dmodel, tube, material, receiver, n):
   """
     Calculate the single-tube number of repetitions to failure
 
@@ -57,12 +57,13 @@ def creep_fatigue(dmodel, tube, material, receiver, fmult):
       tube        single tube with full results
       dmodel      damage material model
       receiver    receiver, for metadata
+      n           numerator on fatigue LDS equation
   """
   # Material point cycle creep damage
   Dc = dmodel.creep_damage(tube, material, receiver)
 
   # Material point cycle fatigue damage
-  Df = dmodel.fatigue_damage(tube, material, receiver) * fmult
+  Df = dmodel.fatigue_damage(tube, material, receiver) * n
 
   nc = receiver.days
 

@@ -1,6 +1,6 @@
 # -*- python-indent-offset: 2 -*-
 #!/usr/bin/env python3
-from os import sep
+from os import sep, path
 import numpy as np
 
 # Functions in this directory:
@@ -143,6 +143,10 @@ if __name__ == '__main__':
     times, ro_tube-wt_tube, ro_tube,
     azi_surf, zen_surf, ftemp, fvel
   )
+
+  ## Check to see if plot directory exists:
+  if not path.exists(dirname + sep + plots):
+    os.makedirs(dirname + sep + plots)
 
   ## Summer:
   pre.plot_pcolor(

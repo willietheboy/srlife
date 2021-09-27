@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from os import sep
+from os import sep, path
 
 import numpy as np
 from math import ceil, floor
@@ -183,6 +183,8 @@ def main(thepanel, dim):
   mechsolve.solve_structural()
 
   # Save the tube data for structural visualization and report tube lifetime
+  if not path.exists('vtu'):
+    os.makedirs('vtu')
   headerprint(' LIFETIME ', ' ')
   life = {}; Dc = {}; Df = {}
   for pi, panel in mechmodel.panels.items():
@@ -194,7 +196,7 @@ def main(thepanel, dim):
       tube.add_quadrature_results(
         'cumDc', post.cumulative_creep_damage(tube, damage_mat)
       )
-      tube.write_vtk("vtu"+sep+"%s-%s-%s-%s" % (dim, defomat, pi, ti))
+      tube.write_vtk("vtu" + sep + "%s-%s-%s-%s" % (dim, defomat, pi, ti))
       # creep and fatigue damage accumulated each cycle and estimated life:
       Dc[ti], Df[ti], life[ti] = post.creep_fatigue(
         damage_model, tube, damage_mat, mechmodel, fmult
