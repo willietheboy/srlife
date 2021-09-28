@@ -137,8 +137,8 @@ def plot_timeseries(x, Y, xlabel, ylabel, fname):
   """
   fig = plt.figure(figsize=(3.5, 3.5))
   ax = fig.add_subplot(111)
-  for i in Y:
-    ax.plot(x, Y[i], label=i)
+  for i, pi in enumerate(Y):
+    ax.plot(x, Y[pi], label='Panel {}'.format(i+1))
   ax.set_xlabel(xlabel)
   ax.set_ylabel(ylabel)
   ax.legend(loc='lower left')

@@ -50,7 +50,7 @@ def sample_parameters():
 
   return params
 
-def main(thepanel, dim):
+def main(thepanel, dim, defomat):
 
   # Load the receiver/panel previously saved
   headerprint(' SOLVE PANEL {} '.format(thepanel))
@@ -75,7 +75,6 @@ def main(thepanel, dim):
   ## Load rheology models:
   mat = "740H"
   thermat = "base"
-  defomat = "elastic_creep" # elastic_model|elastic_creep|base
   damat = "base"
   thermal_mat, deformation_mat, damage_mat = library.load_material(
     mat,
@@ -220,4 +219,5 @@ if __name__ == "__main__":
   """
   thepanel = 0
   dim = '2D'
-  Dc, Df, life = main(thepanel, dim)
+  defo = "elastic_creep" # Defomation model: elastic_model|elastic_creep|base
+  Dc, Df, life = main(thepanel, dim, defo)

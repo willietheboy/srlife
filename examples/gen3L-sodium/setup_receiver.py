@@ -145,8 +145,8 @@ if __name__ == '__main__':
   )
 
   ## Check to see if plot directory exists:
-  if not path.exists(dirname + sep + plots):
-    os.makedirs(dirname + sep + plots)
+  if not path.exists(dirname + sep + 'plots'):
+    os.makedirs(dirname + sep + 'plots')
 
   ## Summer:
   pre.plot_pcolor(
@@ -326,24 +326,24 @@ if __name__ == '__main__':
       r'\textsc{azimuth}, $\gamma$ (rad)',r'\textsc{height}, $z$ (m)',
       'cumDc_{}'.format(pi), compass=False, cmap='inferno'
     )
-  # ## tex-table comparing heuristics of max. temp and cum. damage:
-  # for i in range(n_panels):
-  #   pi = 'panel{}'.format(i)
-  #   print(r'{} & {} & {} & {} & {} & {:e} & {} & {}\\'.format(
-  #     i, maxTemp[pi]-273.15, timeMaxTemp[pi], aziMaxTemp[pi],
-  #     zenMaxTemp[pi], maxDc[pi], aziMaxDc[pi], zenMaxDc[pi])
-  #   )
+  ## tex-table comparing heuristics of max. temp and cum. damage:
+  for i in range(n_panels):
+    pi = 'panel{}'.format(i)
+    print(r'{} & {} & {} & {} & {} & {:e} & {} & {}\\'.format(
+      i+1, timeMaxTemp[pi], maxTemp[pi]-273.15, aziMaxTemp[pi],
+      zenMaxTemp[pi], maxDc[pi], aziMaxDc[pi], zenMaxDc[pi])
+    )
 
-  # ## tex-table comparing location of highest/lowest thermal strain:
-  # for i in range(n_panels):
-  #   pi = 'panel{}'.format(i)
-  #   print(r'{} & {} & {} & {} & {} & {} & {} & {}\\'.format(
-  #     i, maxSig[pi], timeMaxSig[pi], aziMaxSig[pi], zenMaxSig[pi],
-  #     minSig[pi], aziMinSig[pi], zenMinSig[pi])
-  #   )
+  ## tex-table comparing location of highest/lowest thermal strain:
+  for i in range(n_panels):
+    pi = 'panel{}'.format(i)
+    print(r'{} & {} & {} & {} & {} & {} & {} & {}\\'.format(
+      i+1, timeMaxSig[pi], maxSig[pi], aziMaxSig[pi], zenMaxSig[pi],
+      minSig[pi], aziMinSig[pi], zenMinSig[pi])
+    )
 
   ## Plot some time-series information for first six panels:
-  tubeflux = {}; tubetemp = {}; tubehtc = {}
+  tubeflux = {}; tubetemp = {}; tubevel = {}; tubehtc = {}
   h = 5750 # height of most creep damage in panel1
   for i in range(6):
     pi = 'panel{}'.format(i)
@@ -353,22 +353,31 @@ if __name__ == '__main__':
     tubetemp[pi] = ftemp(
       np.array([simtime, aziMaxDc[pi], h])
     )-273.15
+    tubevel[pi] = fvel(
+      np.array([simtime, aziMaxDc[pi], h])
+    )
     tubehtc[pi] = fhtc(
       np.array([simtime, aziMaxDc[pi], h])
     )
   pre.plot_timeseries(
-    simtime, tubeflux, r'\textsc{time}, $t$ (hr)',
+    simtime, tubeflux, r'\textsc{time}, $t$ (h)',
     r'\textsc{net flux density}, '+\
     r'$\vec{\phi}_\mathrm{q,net}$ (\si{\mega\watt\per\meter\squared})',
     'timeseries_flux_receiver_z{}'.format(int(h))
   )
   pre.plot_timeseries(
-    simtime, tubetemp, r'\textsc{time}, $t$ (hr)',
+    simtime, tubetemp, r'\textsc{time}, $t$ (h)',
     r'\textsc{fluid temperature}, $T_\mathrm{f}$ (\si{\celsius})',
     'timeseries_temp_receiver_z{}'.format(int(h))
   )
   pre.plot_timeseries(
-    simtime, tubehtc, r'\textsc{time}, $t$ (hr)',
+    simtime, tubevel, r'\textsc{time}, $t$ (h)',
+    r'\textsc{bulk flow velocity}, '+\
+    r'$U_\mathrm{f}$ (\si{\meter\per\second})',
+    'timeseries_vel_receiver_z{}'.format(int(h))
+  )
+  pre.plot_timeseries(
+    simtime, tubehtc, r'\textsc{time}, $t$ (h)',
     r'\textsc{film coefficient}, '+\
     r'$h_\mathrm{f}$ (\si{\watt\per\milli\meter\per\kelvin})',
     'timeseries_htc_receiver_z{}'.format(int(h))

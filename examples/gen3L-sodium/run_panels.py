@@ -9,15 +9,27 @@ from printers import *
 
 if __name__ == '__main__':
   """
-  Units: stress in MPa, strain in mm/mm, time in hours, temperature in K
+  Run (long) inelastic (repeat design cycle) analysis sequentially,
+  one panel at a time, to save RAM on a typical PC (e.g. 32GB)
+
+  Usage: run_panels.py <first_panel> <last_panel> <ncycles>
+
+  Where:
+      first_panel    Index of first panel in series run [0:11]
+      last_panel     Index of last panel in series run [1:12]
+      ncycles        Number of times to repeat design cycle
   """
-  first = int(sys.argv[1])
-  last = int(sys.argv[2])
+
+  if len(sys.argv) < 4 or len(sys.argv) > 4:
+    RuntimeError("Usage: run_panels.py <first_panel> <last_panel> <ncycles>")
+  first_panel = int(sys.argv[1])
+  last_panel = int(sys.argv[2])
+  ncycles = int(sys.argv[3])
   dim = '2D'
-  ncycles = 30 # assume one cycle is equivalent to four days
+  defo = 'elastic_creep'
   Dc = {}; Df = {}; life = {}; model = {}
   tsetup = {}; tsolve = {}
-  for i in range(first, last):
+  for i in range(first_panel, last_panel):
       tick = timer()
       pi = 'panel{}'.format(i)
       setup_panel.main(i, ncycles)
@@ -25,7 +37,7 @@ if __name__ == '__main__':
       tsetup[pi] = tock - tick
       valprint('Elapsed time', tsetup[pi]/60., 'min')
       Dc[pi] = {}; Df[pi] = {}; life[pi] = {}
-      Dc[pi], Df[pi], life[pi] = solve_panel_mech.main(i, dim)
+      Dc[pi], Df[pi], life[pi] = solve_panel_mech.main(i, dim, defo)
       tick = timer()
       tsolve[pi] = tick - tock
       valprint('Elapsed time', tsolve[pi]/60., 'min')
