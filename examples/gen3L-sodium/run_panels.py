@@ -9,15 +9,14 @@ from printers import *
 
 if __name__ == '__main__':
   """
-  Run (long) inelastic (repeat design cycle) analysis sequentially,
-  one panel at a time, to save RAM on a typical PC (e.g. 32GB)
+  Run (long) inelastic (repeat design cycle) analysis sequentially
 
   Usage: run_panels.py <first_panel> <last_panel> <ncycles>
 
   Where:
       first_panel    Index of first panel in series run [0:11]
       last_panel     Index of last panel in series run [1:12]
-      ncycles        Number of times to repeat design cycle
+      ncycles        Number of times to repeat (structural) design cycle
   """
 
   if len(sys.argv) < 4 or len(sys.argv) > 4:

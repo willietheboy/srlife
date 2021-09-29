@@ -44,7 +44,7 @@ def main(thepanel, ncycles):
   wt_tube = 1.2 # mm
 
   ## Tube discretization:
-  nr = 9
+  nr = 13
   nt = 90
   nz = 30
 

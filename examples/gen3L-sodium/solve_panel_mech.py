@@ -27,8 +27,8 @@ def sample_parameters():
   params["thermal"]["steady"] = False
   params["thermal"]["rtol"] = 1.0e-6
   params["thermal"]["atol"] = 1.0e-8
-  params["thermal"]["miter"] = 20
-  params["thermal"]["substep"] = 40
+  params["thermal"]["miter"] = 100
+  params["thermal"]["substep"] = 200
 
   params["structural"]["rtol"] = 1.0e-6
   params["structural"]["atol"] = 1.0e-8
@@ -195,7 +195,7 @@ def main(thepanel, dim, defomat):
       tube.add_quadrature_results(
         'cumDc', post.cumulative_creep_damage(tube, damage_mat)
       )
-      tube.write_vtk("vtu" + sep + "%s-%s-%s-%s" % (dim, defomat, pi, ti))
+      tube.write_vtk("vtu" + sep + "%s-%s-%s-%s" % (pi, ti, dim, defomat))
       # creep and fatigue damage accumulated each cycle and estimated life:
       Dc[ti], Df[ti], life[ti] = post.creep_fatigue(
         damage_model, tube, damage_mat, mechmodel, fmult
@@ -209,7 +209,9 @@ def main(thepanel, dim, defomat):
   headerprint('')
 
   ## Save mechanical model to HDF5 file:
-  mechmodel.save("panel{}-resu{}-{}.hdf5".format(thepanel, dim, defomat))
+  mechmodel.save("panel{}-resu{}-{}-N{}.hdf5".format(
+    thepanel, dim, defomat, int(mechmodel.days)
+  ))
   ## Return mechmodel too in case of solver failure (debug):
   return Dc, Df, life
 
@@ -219,5 +221,5 @@ if __name__ == "__main__":
   """
   thepanel = 0
   dim = '2D'
-  defo = "elastic_creep" # Defomation model: elastic_model|elastic_creep|base
+  defo = "elastic_model" # Defomation model: elastic_model|elastic_creep|base
   Dc, Df, life = main(thepanel, dim, defo)
