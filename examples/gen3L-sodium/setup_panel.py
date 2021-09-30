@@ -44,7 +44,7 @@ def main(thepanel, ncycles):
   wt_tube = 1.2 # mm
 
   ## Tube discretization:
-  nr = 13
+  nr = 9
   nt = 90
   nz = 30
 
@@ -66,10 +66,10 @@ def main(thepanel, ncycles):
   }
 
   ## Default simulation timestepping over function points:
-  nr0 = 3  # steps ramping pressure (over 0.1 hr)
-  nr1 = 6  # steps ramping thermal (over 0.2 hr)
-  nr2 = 6  # rest of morning/afternoon ramp (over 0.7 hr)
-  nr3 = 3  # each hour between design points
+  nr0 = 6  # steps ramping pressure (over 0.1 hr)
+  nr1 = 11  # steps ramping thermal (over 0.2 hr)
+  nr2 = 11  # rest of morning/afternoon ramp (over 0.7 hr)
+  nr3 = 6  # each hour between design points
   fsteps = {
     'summer':  np.array(
       [nr0,nr1,nr2,nr3,nr3,nr3,nr3,nr3,nr3,nr3,nr3,nr3,nr3,nr2,nr1,nr0]

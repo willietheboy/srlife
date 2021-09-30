@@ -27,15 +27,15 @@ def sample_parameters():
   params["thermal"]["steady"] = False
   params["thermal"]["rtol"] = 1.0e-6
   params["thermal"]["atol"] = 1.0e-8
-  params["thermal"]["miter"] = 100
-  params["thermal"]["substep"] = 200
+  params["thermal"]["miter"] = 50
+  params["thermal"]["substep"] = 40
 
   params["structural"]["rtol"] = 1.0e-6
   params["structural"]["atol"] = 1.0e-8
   params["structural"]["miter"] = 50
   params["structural"]["verbose"] = False
 
-  params["system"]["rtol"] = 1.0e-3
+  params["system"]["rtol"] = 1.0e-4
   params["system"]["atol"] = 1.0e-4
   params["system"]["miter"] = 300
   params["system"]["verbose"] = False
