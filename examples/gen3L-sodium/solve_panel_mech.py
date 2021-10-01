@@ -190,11 +190,12 @@ def main(thepanel, dim, defomat):
     headerprint(' '+pi+' ', ' ')
     strprint('Tube stiffness', panel.stiffness)
     for ti, tube in panel.tubes.items():
-      tube.add_quadrature_results('vonmises', post.vmStress(tube))
-      tube.add_quadrature_results('meeq', post.effStrain(tube))
+      tube.add_quadrature_results('vonmises', post.eff_stress(tube))
+      tube.add_quadrature_results('meeq', post.eff_strain(tube))
       tube.add_quadrature_results(
         'cumDc', post.cumulative_creep_damage(tube, damage_mat)
       )
+      tube.add_quadrature_results('hbbt1413', post.eq_strain_range(tube))
       tube.write_vtk("vtu" + sep + "%s-%s-%s-%s" % (pi, ti, dim, defomat))
       # creep and fatigue damage accumulated each cycle and estimated life:
       Dc[ti], Df[ti], life[ti] = post.creep_fatigue(

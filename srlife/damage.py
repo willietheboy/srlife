@@ -209,9 +209,8 @@ class TimeFractionInteractionDamage(DamageCalculator):
         nu              effective Poisson's ratio to use
     """
     pt_temps = np.max(temperatures, axis = 0)
-
     pt_eranges = np.zeros(pt_temps.shape)
-    nt = strains.shape[0]
+    nt = temperatures.shape[0]
     for i in range(nt):
       for j in range(nt):
         de = strains[:,j] - strains[:,i]

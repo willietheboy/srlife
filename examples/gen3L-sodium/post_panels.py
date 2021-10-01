@@ -114,8 +114,23 @@ if __name__ == "__main__":
   headerprint(' EXTRAPOLATE LIFETIMES ')
   post.plot_cycle_cdamage(
     Dc, ncycles, tubeid='maxDc',
-    filename='panels{}-{}-resu{}-{}-N{}.pdf'.format(
+    filename='panels{}-{}-resu{}-{}-N{}_dDc.pdf'.format(
       first_panel, last_panel-1, dim, defo, ncycles
     ),
     verbose=True
+  )
+
+  ## Check equivalent strain range (through fatigue damage evolution):
+  # aster = {
+  #   'panel0': 5.236726095376204e-07,
+  #   'panel1': 7.422008696634635e-07,
+  #   'panel2': 8.669093048693842e-07,
+  #   'panel3': 3.0121057902408216e-06,
+  #   'panel4': 8.593519726043566e-07,
+  #   'panel5': 2.890085074478858e-06
+  # }
+  post.plot_cycle_fdamage(
+    Df, 'maxDc', 'panels{}-{}-resu{}-{}-N{}_dDf.pdf'.format(
+      first_panel, last_panel-1, dim, defo, ncycles
+    )
   )
