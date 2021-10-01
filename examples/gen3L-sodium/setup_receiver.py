@@ -326,21 +326,21 @@ if __name__ == '__main__':
       r'\textsc{azimuth}, $\gamma$ (rad)',r'\textsc{height}, $z$ (m)',
       'cumDc_{}'.format(pi), compass=False, cmap='inferno'
     )
-  ## tex-table comparing heuristics of max. temp and cum. damage:
-  for i in range(n_panels):
-    pi = 'panel{}'.format(i)
-    print(r'{} & {} & {} & {} & {} & {:e} & {} & {}\\'.format(
-      i+1, timeMaxTemp[pi], maxTemp[pi]-273.15, aziMaxTemp[pi],
-      zenMaxTemp[pi], maxDc[pi], aziMaxDc[pi], zenMaxDc[pi])
-    )
+  # ## tex-table comparing heuristics of max. temp and cum. damage:
+  # for i in range(n_panels):
+  #   pi = 'panel{}'.format(i)
+  #   print(r'{} & {} & {} & {} & {} & {:e} & {} & {}\\'.format(
+  #     i+1, timeMaxTemp[pi], maxTemp[pi]-273.15, aziMaxTemp[pi],
+  #     zenMaxTemp[pi], maxDc[pi], aziMaxDc[pi], zenMaxDc[pi])
+  #   )
 
-  ## tex-table comparing location of highest/lowest thermal strain:
-  for i in range(n_panels):
-    pi = 'panel{}'.format(i)
-    print(r'{} & {} & {} & {} & {} & {} & {} & {}\\'.format(
-      i+1, timeMaxSig[pi], maxSig[pi], aziMaxSig[pi], zenMaxSig[pi],
-      minSig[pi], aziMinSig[pi], zenMinSig[pi])
-    )
+  # ## tex-table comparing location of highest/lowest thermal strain:
+  # for i in range(n_panels):
+  #   pi = 'panel{}'.format(i)
+  #   print(r'{} & {} & {} & {} & {} & {} & {} & {}\\'.format(
+  #     i+1, timeMaxSig[pi], maxSig[pi], aziMaxSig[pi], zenMaxSig[pi],
+  #     minSig[pi], aziMinSig[pi], zenMinSig[pi])
+  #   )
 
   ## Plot some time-series information for first six panels:
   tubeflux = {}; tubetemp = {}; tubevel = {}; tubehtc = {}
@@ -415,12 +415,12 @@ if __name__ == '__main__':
   # ## Setup two tubes per panel at locations of maximum/minimum thermal strain:
   # azitubes = [aziMaxSig, aziMinSig]
   # labels = ['maxSig', 'minSig']
-  # ## Setup one tube at location of maximum estimated crown temperature
-  # azitubes = [aziMaxTemp]
-  # labels = ['maxTemp']
-  ## Setup one tube at location of maximum cumulative creep damage
-  azitubes = [aziMaxDc]
-  labels = ['maxDc']
+  ## Setup one tube at location of maximum estimated crown temperature
+  azitubes = [aziMaxTemp]
+  labels = ['maxTemp']
+  # ## Setup one tube at location of maximum cumulative creep damage
+  # azitubes = [aziMaxDc]
+  # labels = ['maxDc']
   # for i in range(n_panels):
   for i in range(6):
     headerprint(' SETUP PANEL {} '.format(i), '=')

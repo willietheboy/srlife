@@ -145,11 +145,14 @@ if __name__ == "__main__":
     headerprint(" REDUCE TO 2D ", ' ')
     for pi, panel in thermodel.panels.items():
       for ti, tube in panel.tubes.items():
-        valprint(ti, zenMaxDc[pi], 'mm')
-        tube.make_2D(zenMaxDc[pi])
+        # valprint(ti, zenMaxDc[pi], 'mm')
+        # tube.make_2D(zenMaxDc[pi])
+        valprint(ti, zenMaxTemp[pi], 'mm')
+        tube.make_2D(zenMaxTemp[pi])
     for pi, panel in mechmodel.panels.items():
       for ti, tube in panel.tubes.items():
-        tube.make_2D(zenMaxDc[pi])
+        # tube.make_2D(zenMaxDc[pi])
+        tube.make_2D(zenMaxTemp[pi])
 
   ## Heuristics
   #solver.add_heuristic(managers.CycleResetHeuristic())
@@ -186,15 +189,15 @@ if __name__ == "__main__":
       valprint('fluid temp.', fluid[ti]-273.15, 'degC')
       flux[ti] = tube.outer_bc.flux(times[loc_max[0]], 0, zTmax[ti])[0]
       valprint('flux', flux[ti], 'MW/m^2')
-  ## tex-table:
-  print(r'Tube & Design pt. & z (mm) & '+\
-        'T_f (degC) & T_t (degC) & flux (MW/m^2)')
-  for pi, panel in model.panels.items():
-    for ti, tube in panel.tubes.items():
-      print(r'{} & {} & {} & {} & {} & {}\\'.format(
-        ti.replace('tube',''),
-        '{} {:+.0f}'.format(peakseas[ti],(tmax[ti] % period_day)-noon),
-        zTmax[ti], fluid[ti]-273.15, Tmax[ti]-273.15, flux[ti]
-      ))
+  # ## tex-table:
+  # print(r'Tube & Design pt. & z (mm) & '+\
+  #       'T_f (degC) & T_t (degC) & flux (MW/m^2)')
+  # for pi, panel in model.panels.items():
+  #   for ti, tube in panel.tubes.items():
+  #     print(r'{} & {} & {} & {} & {} & {}\\'.format(
+  #       ti.replace('tube',''),
+  #       '{} {:+.0f}'.format(peakseas[ti],(tmax[ti] % period_day)-noon),
+  #       zTmax[ti], fluid[ti]-273.15, Tmax[ti]-273.15, flux[ti]
+  #     ))
   ## Save thermal results to HDF5 file:
   model.save("receiver-resu{}-thermal.hdf5".format(dim))
