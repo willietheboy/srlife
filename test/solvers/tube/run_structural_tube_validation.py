@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import os.path
-
 import numpy as np
 import numpy.linalg as la
 import scipy.io as sio
@@ -9,6 +7,7 @@ import scipy.io as sio
 import matplotlib.pyplot as plt
 from neml import models, elasticity, parse
 
+import os
 import sys
 sys.path.append('../../..')
 from srlife import receiver, structural, spring
@@ -168,10 +167,12 @@ class TestCase:
     ax1.plot(r, self.exact(r), 'k--')
     ax1.set_xlabel(r'\textsc{radial position}, $r$ (mm)')
     ax1.set_ylabel(r'\textsc{radial displacement}, $u$ (mm)')
-    ax1.set_title(self.name + ": " + "%iD" % tube.ndim)
+    #ax1.set_title(self.name + ": " + "%iD" % tube.ndim)
     fig1.tight_layout()
-    fig1.savefig('pdf/'+self.afn.__name__ + "_%iD" % tube.ndim + '.pdf')
-    fig1.savefig('pdf/'+self.afn.__name__ + "_%iD" % tube.ndim + '.png', dpi=150)
+    if not os.path.isdir('pdf'):
+      os.makedirs('pdf')
+    fig1.savefig('pdf'+os.path.sep+self.afn.__name__ + "_%iD" % tube.ndim + '.pdf')
+    fig1.savefig('pdf'+os.path.sep+self.afn.__name__ + "_%iD" % tube.ndim + '.png', dpi=150)
     plt.close('all')
 
   def evaluate_comparison(self, tube):
@@ -283,7 +284,7 @@ def no_out_of_plane_Z_force(p, ri, ro):
 
 def pressure_out_of_plane_Z_force(p, ri, ro):
   """
-  Assumption of tube closed at both ends (C is stress)
+  Assumption of tube closed at both ends (C is a stress)
   """
   C = p * ri**2 / (ro**2 - ri**2)
   return -C * np.pi * (ro**2 - ri**2)
@@ -343,7 +344,7 @@ if __name__ == "__main__":
       state, tube = case.run_comparison(d, solver, nr, nt, nz)
       a, r = case.evaluate_comparison(tube)
       print(case.name + ": " "%iD" % d)
-      print("Axial (resultant) force: %e (MN)" % state.force)
+      print("Axial (resultant) force: %e (N)" % state.force)
       print("Max absolute error: %e" % a)
       print("Max relative error: %e" % r)
       print("")
