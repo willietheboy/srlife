@@ -22,7 +22,7 @@ def eff_stress(tube):
      tube.quadrature_results['stress_zz'])**2.0 +
     (tube.quadrature_results['stress_zz'] -
      tube.quadrature_results['stress_xx'])**2.0 +
-    3.0 * (tube.quadrature_results['stress_xy']**2.0 +
+    6.0 * (tube.quadrature_results['stress_xy']**2.0 +
            tube.quadrature_results['stress_yz']**2.0 +
            tube.quadrature_results['stress_xz']**2.0))/2.0
   )

@@ -69,7 +69,7 @@ def main(thepanel, ncycles):
   nr0 = 6  # steps ramping pressure (over 0.1 hr)
   nr1 = 11  # steps ramping thermal (over 0.2 hr)
   nr2 = 11  # rest of morning/afternoon ramp (over 0.7 hr)
-  nr3 = 6  # each hour between design points
+  nr3 = 11  # each hour between design points
   fsteps = {
     'summer':  np.array(
       [nr0,nr1,nr2,nr3,nr3,nr3,nr3,nr3,nr3,nr3,nr3,nr3,nr3,nr2,nr1,nr0]

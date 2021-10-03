@@ -71,6 +71,13 @@ def main(thepanel, dim, defomat, ndays):
     headerprint(' '+pi+' ', ' ')
     strprint('Tube stiffness', panel.stiffness)
     for ti, tube in panel.tubes.items():
+      tube.add_quadrature_results('vonmises', post.eff_stress(tube))
+      # tube.add_quadrature_results('meeq', post.eff_strain(tube))
+      # tube.add_quadrature_results(
+      #   'cumDc', post.cumulative_creep_damage(tube, damage_mat)
+      # )
+      # tube.add_quadrature_results('hbbt1413', post.eq_strain_range(tube))
+      tube.write_vtk("vtu" + sep + "%s-%s-%s-%s" % (pi, ti, dim, defomat))
       # creep and fatigue damage accumulated each cycle and estimated life:
       Dc[ti], Df[ti], life[ti] = post.creep_fatigue(
         damage_model, tube, damage_mat, model, fmult
@@ -102,8 +109,8 @@ if __name__ == "__main__":
   first_panel = int(sys.argv[1])
   last_panel = int(sys.argv[2])
   ncycles = int(sys.argv[3])
-  dim = '2D'
   defo = 'elastic_creep'
+  dim = '2D'
   Dc = {}; Df = {}; life = {}; model = {}
   for i in range(first_panel, last_panel):
       pi = 'panel{}'.format(i)
@@ -120,15 +127,6 @@ if __name__ == "__main__":
     verbose=True
   )
 
-  ## Check equivalent strain range (through fatigue damage evolution):
-  # aster = {
-  #   'panel0': 5.236726095376204e-07,
-  #   'panel1': 7.422008696634635e-07,
-  #   'panel2': 8.669093048693842e-07,
-  #   'panel3': 3.0121057902408216e-06,
-  #   'panel4': 8.593519726043566e-07,
-  #   'panel5': 2.890085074478858e-06
-  # }
   post.plot_cycle_fdamage(
     Df, 'maxDc', 'panels{}-{}-resu{}-{}-N{}_dDf.pdf'.format(
       first_panel, last_panel-1, dim, defo, ncycles

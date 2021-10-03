@@ -35,8 +35,8 @@ def sample_parameters():
   params["structural"]["miter"] = 50
   params["structural"]["verbose"] = False
 
-  params["system"]["rtol"] = 1.0e-4
-  params["system"]["atol"] = 1.0e-4
+  params["system"]["rtol"] = 1.0e-6
+  params["system"]["atol"] = 1.0e-8
   params["system"]["miter"] = 300
   params["system"]["verbose"] = False
 

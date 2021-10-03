@@ -25,7 +25,7 @@ if __name__ == '__main__':
   last_panel = int(sys.argv[2])
   ncycles = int(sys.argv[3])
   dim = '2D'
-  defo = 'elastic_creep'
+  defo = 'elastic_model'
   Dc = {}; Df = {}; life = {}; model = {}
   tsetup = {}; tsolve = {}
   for i in range(first_panel, last_panel):
