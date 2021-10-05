@@ -24,11 +24,11 @@ def sample_parameters():
   # -> has little impact on short simulation (<10 cycles) memory usage
   params["page_results"] = False
 
-  params["thermal"]["steady"] = False
   params["thermal"]["rtol"] = 1.0e-6
   params["thermal"]["atol"] = 1.0e-8
   params["thermal"]["miter"] = 50
   params["thermal"]["substep"] = 40
+  params["thermal"]["steady"] = False
 
   params["structural"]["rtol"] = 1.0e-6
   params["structural"]["atol"] = 1.0e-8
@@ -175,7 +175,7 @@ def main(thepanel, dim, defomat):
       mechtube.add_results('temperature', mechtemp)
 
   ## Heuristics (set temperature to T0 at cycle boundaries)
-  mechsolve.add_heuristic(managers.CycleResetHeuristic())
+  #mechsolve.add_heuristic(managers.CycleResetHeuristic())
 
   ## 2D structural:
   headerprint(' MECHANICAL SOLVE ', ' ')

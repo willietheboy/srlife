@@ -71,8 +71,8 @@ def main(thepanel, dim, defomat, ndays):
     headerprint(' '+pi+' ', ' ')
     strprint('Tube stiffness', panel.stiffness)
     for ti, tube in panel.tubes.items():
-      tube.add_quadrature_results('vonmises', post.eff_stress(tube))
-      # tube.add_quadrature_results('meeq', post.eff_strain(tube))
+      # tube.add_quadrature_results('vonmises', post.eff_stress(tube))
+      tube.add_quadrature_results('meeq', post.eff_strain(tube))
       # tube.add_quadrature_results(
       #   'cumDc', post.cumulative_creep_damage(tube, damage_mat)
       # )
@@ -109,13 +109,13 @@ if __name__ == "__main__":
   first_panel = int(sys.argv[1])
   last_panel = int(sys.argv[2])
   ncycles = int(sys.argv[3])
-  defo = 'elastic_creep'
+  defo = 'elastic_constant' # elastic_constant drops temperature-dependence
   dim = '2D'
   Dc = {}; Df = {}; life = {}; model = {}
   for i in range(first_panel, last_panel):
-      pi = 'panel{}'.format(i)
-      Dc[pi] = {}; Df[pi] = {}; life[pi] = {}
-      Dc[pi], Df[pi], life[pi] = main(i, dim, defo, ncycles)
+    pi = 'panel{}'.format(i)
+    Dc[pi] = {}; Df[pi] = {}; life[pi] = {}
+    Dc[pi], Df[pi], life[pi] = main(i, dim, defo, ncycles)
 
   ## Plot extrapolation of creep damage to 2750 cycles (11e3 days):
   headerprint(' EXTRAPOLATE LIFETIMES ')
@@ -124,9 +124,9 @@ if __name__ == "__main__":
     filename='panels{}-{}-resu{}-{}-N{}_dDc.pdf'.format(
       first_panel, last_panel-1, dim, defo, ncycles
     ),
-    verbose=True
+    extrapolate_plot=True, verbose=True
   )
-
+  ## Plot cyclic fatigue damage
   post.plot_cycle_fdamage(
     Df, 'maxDc', 'panels{}-{}-resu{}-{}-N{}_dDf.pdf'.format(
       first_panel, last_panel-1, dim, defo, ncycles

@@ -10,7 +10,7 @@ from printers import *
 
 def eff_stress(tube):
   """
-  Calculate von Mises effective stress
+  Calculate von Mises effective stress (Mandel notation)
 
   Parameters:
     tube        single tube with complete structural results
@@ -30,7 +30,7 @@ def eff_stress(tube):
 
 def eff_strain(tube):
   """
-  Calculate effective (mechanical) strain
+  Calculate effective (mechanical) strain (Mandel notation)
 
   Parameters:
     tube        single tube with complete structural results
@@ -39,9 +39,7 @@ def eff_strain(tube):
     2.0/3.0 * (
       tube.quadrature_results['mechanical_strain_xx']**2 +
       tube.quadrature_results['mechanical_strain_yy']**2 +
-      tube.quadrature_results['mechanical_strain_zz']**2
-    ) +
-    4.0/3.0 * (
+      tube.quadrature_results['mechanical_strain_zz']**2 +
       tube.quadrature_results['mechanical_strain_xy']**2 +
       tube.quadrature_results['mechanical_strain_xy']**2 +
       tube.quadrature_results['mechanical_strain_yz']**2
@@ -134,7 +132,8 @@ def log10_interp1d (x, xx, yy, order=1):
   lin_interp = lambda N: np.power(10, poly(np.log10(N)))
   return lin_interp(x), coeffs
 
-def plot_cycle_cdamage(cycDc, ncycles, tubeid, filename, verbose=False):
+def plot_cycle_cdamage(cycDc, ncycles, tubeid, filename,
+                       extrapolate_plot=True, verbose=False):
 
   figD = plt.figure(figsize=(3.5, 3.5))
   axD = figD.add_subplot(111)
@@ -151,17 +150,23 @@ def plot_cycle_cdamage(cycDc, ncycles, tubeid, filename, verbose=False):
       strprint('Cycle creep damage eq.', poly)
       Dlife = np.sum(Dex)
       valprint('sum(Dc[:2750])', Dlife)
-    axD.loglog(
-      N, D,
-      color='C{}'.format(i)
-    )
-    axD.loglog(
-      Nex, Dex,
-      label=r'Panel {} $\to'.format(i+1)+\
-      r'\num{'+'{:.2e}'.format(Dex[-1])+'}$',
-      # label=r'Panel {} $\to'.format(i+1)+': '+poly,
-      linestyle='dashed', color='C{}'.format(i)
-    )
+    if extrapolate_plot:
+      axD.loglog(
+        N, D,
+        color='C{}'.format(i)
+      )
+      axD.loglog(
+        Nex, Dex,
+        label=r'Panel {} $\to'.format(i+1)+\
+        r'\num{'+'{:.2e}'.format(Dex[-1])+'}$',
+        # label=r'Panel {} $\to'.format(i+1)+': '+poly,
+        linestyle='dashed', color='C{}'.format(i)
+      )
+    else:
+      axD.loglog(
+        N, D, label=r'Panel {}'.format(i+1),
+        color='C{}'.format(i)
+      )
   axD.set_xlabel(r'\textsc{cycle number}, $N$')
   axD.set_ylabel(r'\textsc{cycle creep damage}, '+\
                  '$\delta D_\mathrm{\scriptscriptstyle R}$')

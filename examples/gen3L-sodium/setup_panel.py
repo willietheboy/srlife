@@ -66,7 +66,7 @@ def main(thepanel, ncycles):
   }
 
   ## Default simulation timestepping over function points:
-  nr0 = 6  # steps ramping pressure (over 0.1 hr)
+  nr0 = 6   # steps ramping pressure (over 0.1 hr)
   nr1 = 11  # steps ramping thermal (over 0.2 hr)
   nr2 = 11  # rest of morning/afternoon ramp (over 0.7 hr)
   nr3 = 11  # each hour between design points
