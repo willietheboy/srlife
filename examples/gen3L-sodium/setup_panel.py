@@ -289,6 +289,6 @@ if __name__ == '__main__':
   """
   Units: stress in MPa, strain in mm/mm, time in hours, temperature in K
   """
-  thepanel = 0
-  ncycles = 15
+  thepanel = 1
+  ncycles = 3
   main(thepanel, ncycles)

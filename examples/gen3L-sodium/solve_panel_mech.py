@@ -220,7 +220,8 @@ if __name__ == "__main__":
   """
   Units: stress in MPa, strain in mm/mm, time in hours, temperature in K
   """
-  thepanel = 0
+  thepanel = 1
   dim = '2D'
-  defo = "elastic_model" # Defomation model: elastic_model|elastic_creep|base
+  # Defomation model: "elastic_model|elastic_constant|elastic_creep|base":
+  defo = "elastic_model"
   Dc, Df, life = main(thepanel, dim, defo)
