@@ -35,8 +35,8 @@ def sample_parameters():
   params["structural"]["miter"] = 50
   params["structural"]["verbose"] = False
 
-  params["system"]["rtol"] = 1.0e-6
-  params["system"]["atol"] = 1.0e-8
+  params["system"]["rtol"] = 1.0e-3
+  params["system"]["atol"] = 1.0e-4
   params["system"]["miter"] = 300
   params["system"]["verbose"] = False
 
@@ -71,7 +71,7 @@ def main(thepanel, dim, defomat):
     raise ValueError("Thermal and mechanical metric don't match")
 
   ## Liquid sodium in 60OD, 1.2WT -> "base": 3m/s, "lowflow": 1.5 m/s
-  fluid_mat = library.load_fluid("sodium", "base")
+  fluid_mat = library.load_fluid("sodium", "lowflow")
   ## Load rheology models:
   mat = "740H"
   thermat = "base"
@@ -191,12 +191,14 @@ def main(thepanel, dim, defomat):
     strprint('Tube stiffness', panel.stiffness)
     for ti, tube in panel.tubes.items():
       tube.add_quadrature_results('vonmises', post.eff_stress(tube))
-      tube.add_quadrature_results('meeq', post.eff_strain(tube))
+      #tube.add_quadrature_results('meeq', post.eff_strain(tube))
       tube.add_quadrature_results(
         'cumDc', post.cumulative_creep_damage(tube, damage_mat)
       )
       tube.add_quadrature_results('hbbt1413', post.eq_strain_range(tube))
-      tube.write_vtk("vtu" + sep + "%s-%s-%s-%s" % (pi, ti, dim, defomat))
+      tube.write_vtk(
+        "vtu" + sep + "%s-%s-%s-%s-%s" % (pi, ti, dim, defomat, mechmodel.days)
+      )
       # creep and fatigue damage accumulated each cycle and estimated life:
       Dc[ti], Df[ti], life[ti] = post.creep_fatigue(
         damage_model, tube, damage_mat, mechmodel, fmult

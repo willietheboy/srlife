@@ -170,7 +170,7 @@ class TimeFractionInteractionDamage(DamageCalculator):
     # Run through each cycle and ID max strain range and fatigue damage
     strain_names = ['mechanical_strain_xx', 'mechanical_strain_yy', 'mechanical_strain_zz',
         'mechanical_strain_yz', 'mechanical_strain_xz', 'mechanical_strain_xy']
-    strain_factors = [1.0,1.0,1.0,np.sqrt(2), np.sqrt(2), np.sqrt(2)]
+    strain_factors = [1.0,1.0,1.0,2.0,2.0,2.0]
 
     cycle_dmg =  np.array([self.cycle_fatigue(np.array([ef*tube.quadrature_results[en][
       inds[i]:inds[i+1]] for
@@ -210,7 +210,7 @@ class TimeFractionInteractionDamage(DamageCalculator):
     """
     pt_temps = np.max(temperatures, axis = 0)
     pt_eranges = np.zeros(pt_temps.shape)
-    nt = temperatures.shape[0]
+    nt = strains.shape[1]
     for i in range(nt):
       for j in range(nt):
         de = strains[:,j] - strains[:,i]

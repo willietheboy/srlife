@@ -10,7 +10,7 @@ from printers import *
 
 def eff_stress(tube):
   """
-  Calculate von Mises effective stress (Mandel notation)
+  Calculate von Mises effective stress
 
   Parameters:
     tube        single tube with complete structural results
@@ -30,7 +30,7 @@ def eff_stress(tube):
 
 def eff_strain(tube):
   """
-  Calculate effective (mechanical) strain (Mandel notation)
+  Calculate effective (mechanical) strain
 
   Parameters:
     tube        single tube with complete structural results
@@ -40,9 +40,9 @@ def eff_strain(tube):
       tube.quadrature_results['mechanical_strain_xx']**2 +
       tube.quadrature_results['mechanical_strain_yy']**2 +
       tube.quadrature_results['mechanical_strain_zz']**2 +
-      tube.quadrature_results['mechanical_strain_xy']**2 +
-      tube.quadrature_results['mechanical_strain_xy']**2 +
-      tube.quadrature_results['mechanical_strain_yz']**2
+      2*tube.quadrature_results['mechanical_strain_xy']**2 +
+      2*tube.quadrature_results['mechanical_strain_xy']**2 +
+      2*tube.quadrature_results['mechanical_strain_yz']**2
     )
   )
   return ee
@@ -68,35 +68,29 @@ def cumulative_creep_damage(tube, material):
 
 def eq_strain_range(tube, nu = 0.5):
   """
-  Calculate ASME III, HBB T-1413 equivalent strain range referenced
-  from a zero (starting) strain range (for visualisation/verification)
+  Calculate ASME III, HBB T-1413 equivalent strain
 
   Parameters:
     tube         single tube with full results
 
   Additional parameters:
-    nu           effective Poisson's ratio to use
+    nu           effective Poisson's ratio
   """
-  strain_names = [
-    'mechanical_strain_xx', 'mechanical_strain_yy', 'mechanical_strain_zz',
-    'mechanical_strain_yz', 'mechanical_strain_xz', 'mechanical_strain_xy'
-  ]
-  strain_factors = [1.0,1.0,1.0,np.sqrt(2),np.sqrt(2),np.sqrt(2)]
-  strains = np.array(
-    [ef*tube.quadrature_results[en]
-     for en,ef in zip(strain_names, strain_factors)]
-  )
-  pt_eranges = np.zeros(strains[0].shape)
-  nt = strains.shape[1]
-  for i in range(nt):
-    de = strains[:,i]
-    eq = np.sqrt(2) / (2*(1+nu)) * np.sqrt(
-      (de[0]-de[1])**2.0 + (de[1]-de[2])**2.0 + (de[2]-de[0])**2.0
-      + 3.0/2.0 * (de[3]**2.0 + de[4]**2.0 + de[5]**2.0)
+  erange = np.sqrt(2) / (2*(1+nu)) * np.sqrt(
+    (tube.quadrature_results['mechanical_strain_xx'] -
+     tube.quadrature_results['mechanical_strain_yy'])**2.0 +
+    (tube.quadrature_results['mechanical_strain_yy'] -
+     tube.quadrature_results['mechanical_strain_zz'])**2.0 +
+    (tube.quadrature_results['mechanical_strain_zz'] -
+     tube.quadrature_results['mechanical_strain_xx'])**2.0 +
+    3.0/2.0 * (
+      (2*tube.quadrature_results['mechanical_strain_xy'])**2.0 +
+      (2*tube.quadrature_results['mechanical_strain_yz'])**2.0 +
+      (2*tube.quadrature_results['mechanical_strain_xz'])**2.0
     )
-    pt_eranges[i] = eq
+  )
 
-  return pt_eranges
+  return erange
 
 def creep_fatigue(dmodel, tube, material, receiver, n):
   """
@@ -132,15 +126,15 @@ def log10_interp1d (x, xx, yy, order=1):
   lin_interp = lambda N: np.power(10, poly(np.log10(N)))
   return lin_interp(x), coeffs
 
-def plot_cycle_cdamage(cycDc, ncycles, tubeid, filename,
+def plot_cycle_cdamage(dDc, ncycles, tubeid, filename,
                        extrapolate_plot=True, verbose=False):
 
   figD = plt.figure(figsize=(3.5, 3.5))
   axD = figD.add_subplot(111)
   ## extrapolate to 2750 cycles (11e3 days)
   Nex = np.arange(1, 2751)
-  for i, pi in enumerate(cycDc):
-    D = cycDc[pi][tubeid][:ncycles]
+  for i, pi in enumerate(dDc):
+    D = dDc[pi][tubeid][:ncycles]
     N = np.arange(1,len(D)+1)[:ncycles]
     Dex, coeffs = log10_interp1d(Nex, N, D, 1)
     poly = r'$10^{'+'{:.2f}'.format(coeffs[0])+\
@@ -175,12 +169,12 @@ def plot_cycle_cdamage(cycDc, ncycles, tubeid, filename,
   figD.savefig('{}'.format(filename)) # extension included
   plt.close(figD)
 
-def plot_cycle_fdamage(cycDc, tubeid, filename):
+def plot_cycle_fdamage(dDc, tubeid, filename):
 
   figD = plt.figure(figsize=(3.5, 3.5))
   axD = figD.add_subplot(111)
-  for i, pi in enumerate(cycDc):
-    D = cycDc[pi][tubeid]
+  for i, pi in enumerate(dDc):
+    D = dDc[pi][tubeid]
     N = np.arange(1,len(D)+1)
     axD.plot(
       N, D, label='Panel {}'.format(i+1)

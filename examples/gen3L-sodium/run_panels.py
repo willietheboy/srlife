@@ -25,13 +25,13 @@ if __name__ == '__main__':
   last_panel = int(sys.argv[2])
   ncycles = int(sys.argv[3])
   dim = '2D'
-  defo = 'elastic_constant' # "elastic_model|elastic_constant"
+  defo = 'const_elastic_creep'
   Dc = {}; Df = {}; life = {}; model = {}
   tsetup = {}; tsolve = {}
   for i in range(first_panel, last_panel):
       tick = timer()
       pi = 'panel{}'.format(i)
-      setup_panel.main(i, ncycles)
+      #setup_panel.main(i, ncycles)
       tock = timer()
       tsetup[pi] = tock - tick
       valprint('Elapsed time', tsetup[pi]/60., 'min')

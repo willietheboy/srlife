@@ -71,13 +71,6 @@ def main(thepanel, dim, defomat, ndays):
     headerprint(' '+pi+' ', ' ')
     strprint('Tube stiffness', panel.stiffness)
     for ti, tube in panel.tubes.items():
-      # tube.add_quadrature_results('vonmises', post.eff_stress(tube))
-      tube.add_quadrature_results('meeq', post.eff_strain(tube))
-      # tube.add_quadrature_results(
-      #   'cumDc', post.cumulative_creep_damage(tube, damage_mat)
-      # )
-      # tube.add_quadrature_results('hbbt1413', post.eq_strain_range(tube))
-      tube.write_vtk("vtu" + sep + "%s-%s-%s-%s" % (pi, ti, dim, defomat))
       # creep and fatigue damage accumulated each cycle and estimated life:
       Dc[ti], Df[ti], life[ti] = post.creep_fatigue(
         damage_model, tube, damage_mat, model, fmult
@@ -109,7 +102,7 @@ if __name__ == "__main__":
   first_panel = int(sys.argv[1])
   last_panel = int(sys.argv[2])
   ncycles = int(sys.argv[3])
-  defo = 'elastic_constant' # elastic_constant drops temperature-dependence
+  defo = 'const_elastic_creep'
   dim = '2D'
   Dc = {}; Df = {}; life = {}; model = {}
   for i in range(first_panel, last_panel):
@@ -132,3 +125,12 @@ if __name__ == "__main__":
       first_panel, last_panel-1, dim, defo, ncycles
     )
   )
+
+  ## tex-table
+  for i in range(6):
+    pi = 'panel{}'.format(i)
+    print('{} & {:.3e} & {:.3e} & {:.3e} & {:.3e} & {:.0f} & {:.0f}\\\\'.format(
+      i+1, sum(Dc[pi]['maxDc']), sum(Df[pi]['maxDc']),
+      Dc[pi]['maxDc'][-1], Df[pi]['maxDc'][-1],
+      life[pi]['maxDc'],life[pi]['maxDc']/90)
+    )
