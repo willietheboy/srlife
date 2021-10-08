@@ -31,7 +31,7 @@ if __name__ == '__main__':
   for i in range(first_panel, last_panel):
       tick = timer()
       pi = 'panel{}'.format(i)
-      #setup_panel.main(i, ncycles)
+      setup_panel.main(i, ncycles)
       tock = timer()
       tsetup[pi] = tock - tick
       valprint('Elapsed time', tsetup[pi]/60., 'min')

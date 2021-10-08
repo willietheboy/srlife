@@ -71,7 +71,7 @@ def main(thepanel, dim, defomat):
     raise ValueError("Thermal and mechanical metric don't match")
 
   ## Liquid sodium in 60OD, 1.2WT -> "base": 3m/s, "lowflow": 1.5 m/s
-  fluid_mat = library.load_fluid("sodium", "lowflow")
+  fluid_mat = library.load_fluid("sodium", "base")
   ## Load rheology models:
   mat = "740H"
   thermat = "base"
